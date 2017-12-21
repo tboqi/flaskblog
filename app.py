@@ -84,12 +84,25 @@ class MyModelView(sqla.ModelView):
 def index():
     return render_template('index.html')
 
+
+@app.route('/admin/')
+def admin_index():
+    if not current_user.is_active or not current_user.is_authenticated or not current_user.has_role('superuser'):
+        return redirect(url_for('security.login', next=request.url))
+
+    return render_template('admin/index.html')
+
+
+@app.route('/admin/welcome')
+def welcome():
+    if not current_user.is_active or not current_user.is_authenticated:
+        return redirect(url_for('security.login', next=request.url))
+
+    return render_template('admin/welcome.html')
+
 # Create admin
 admin = flask_admin.Admin(
     app,
-    'Example: Auth',
-    base_template='my_master.html',
-    template_mode='bootstrap3',
 )
 
 # Add model views
