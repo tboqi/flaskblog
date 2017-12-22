@@ -78,7 +78,22 @@ class User(db.Model, UserMixin):
     role_id = db.Column(db.Integer, db.ForeignKey('auth_roles.id'))
 
     def __str__(self):
-        return self.email
+        return self.name
+
+
+class Article(db.Model, UserMixin):
+    __tablename__ = 'articles'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255))
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime())
+    updated_at = db.Column(db.DateTime())
+    author = db.relationship('User',
+                             backref=db.backref('auth_users'))
+    author_id = db.Column(db.Integer, db.ForeignKey('auth_users.id'))
+
+    def __str__(self):
+        return self.name
 
 
 # Setup Flask-Security
@@ -160,6 +175,7 @@ admin.add_view(RoleModelView(Role, db.session))
 admin.add_view(UserModelView(User, db.session))
 admin.add_view(PermissionModelView(Permission, db.session))
 admin.add_view(MyModelView(Router, db.session))
+admin.add_view(MyModelView(Article, db.session))
 
 # define a context processor for merging flask-admin's template context into the
 # flask-security views.
