@@ -15,34 +15,29 @@ app.config.from_pyfile('config.py')
 db = SQLAlchemy(app)
 
 
-# Define models
-user_role_ln = db.Table(
-    'user_role_ln',
-    db.Column('user_id', db.Integer(), db.ForeignKey('users.id')),
-    db.Column('role_id', db.Integer(), db.ForeignKey('user_roles.id'))
-)
-
-
 class Role(db.Model, RoleMixin):
-    __tablename__ = 'user_roles'
+    __tablename__ = 'auth_roles'
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
+    users = db.relationship("User",
+                            backref=db.backref('auth_users'))
 
     def __str__(self):
         return self.name
 
 
 class User(db.Model, UserMixin):
-    __tablename__ = 'users'
+    __tablename__ = 'auth_users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     email = db.Column(db.String(255), unique=True)
     password = db.Column(db.String(255))
     active = db.Column(db.Boolean())
-    confirmed_at = db.Column(db.DateTime())
-    roles = db.relationship('Role', secondary=user_role_ln,
-                            backref=db.backref('users', lazy='dynamic'))
+    created_at = db.Column(db.DateTime())
+    role = db.relationship('Role',
+                           backref=db.backref('auth_roles'))
+    role_id = db.Column(db.Integer, db.ForeignKey('auth_roles.id'))
 
     def __str__(self):
         return self.email
@@ -60,8 +55,8 @@ class MyModelView(sqla.ModelView):
         if not current_user.is_active or not current_user.is_authenticated:
             return False
 
-        if current_user.has_role('superuser'):
-            return True
+        # if current_user.has_role('superuser'):
+        #     return True
 
         return False
 
@@ -87,7 +82,8 @@ def index():
 
 @app.route('/admin/')
 def admin_index():
-    if not current_user.is_active or not current_user.is_authenticated or not current_user.has_role('superuser'):
+    # or not current_user.has_role('superuser')
+    if not current_user.is_active or not current_user.is_authenticated:
         return redirect(url_for('security.login', next=request.url))
 
     return render_template('admin/index.html')
