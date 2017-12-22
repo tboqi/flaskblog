@@ -7,12 +7,14 @@ from flask_security.utils import encrypt_password
 import flask_admin
 from flask_admin.contrib import sqla
 from flask_admin import helpers as admin_helpers
-
+from flask_babelex import Babel
 
 # Create Flask application
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
 db = SQLAlchemy(app)
+babel = Babel(app)
+app.config['BABEL_DEFAULT_LOCALE'] = 'zh_CN'
 
 
 class Role(db.Model, RoleMixin):
@@ -50,6 +52,9 @@ security = Security(app, user_datastore)
 
 # Create customized model view class
 class MyModelView(sqla.ModelView):
+
+    form_excluded_columns = ['created_at']
+    column_exclude_list = ['password', ]
 
     def is_accessible(self):
         if not current_user.is_active or not current_user.is_authenticated:
@@ -99,9 +104,7 @@ def welcome():
     return render_template('admin/welcome.html')
 
 # Create admin
-admin = flask_admin.Admin(
-    app,
-)
+admin = flask_admin.Admin(app, template_mode='bootstrap2')
 
 # Add model views
 admin.add_view(RoleModelView(Role, db.session))
