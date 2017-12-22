@@ -161,11 +161,8 @@ def admin_index():
 
 
 @app.route('/admin/welcome')
-def welcome():
-    if not current_user.is_active or not current_user.is_authenticated:
-        return redirect(url_for('security.login', next=request.url))
-
-    return render_template('admin/welcome.html')
+def admin_welcome():
+    return request.path
 
 # Create admin
 admin = flask_admin.Admin(app, template_mode='bootstrap3')
