@@ -29,6 +29,15 @@ class Role(db.Model, RoleMixin):
         return self.name
 
 
+class Permission(db.Model, RoleMixin):
+    __tablename__ = 'auth_permissions'
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class User(db.Model, UserMixin):
     __tablename__ = 'auth_users'
     id = db.Column(db.Integer, primary_key=True)
@@ -79,6 +88,10 @@ class RoleModelView(MyModelView):
     column_labels = {'name': '角色名', 'description': '描述'}
 
 
+class PermissionModelView(MyModelView):
+    column_labels = {'name': '名称'}
+
+
 class UserModelView(MyModelView):
     form_excluded_columns = ['created_at']
     column_exclude_list = ['password', ]
@@ -109,11 +122,12 @@ def welcome():
     return render_template('admin/welcome.html')
 
 # Create admin
-admin = flask_admin.Admin(app, template_mode='bootstrap2')
+admin = flask_admin.Admin(app, template_mode='bootstrap3')
 
 # Add model views
 admin.add_view(RoleModelView(Role, db.session))
 admin.add_view(UserModelView(User, db.session))
+admin.add_view(PermissionModelView(Permission, db.session))
 
 # define a context processor for merging flask-admin's template context into the
 # flask-security views.
