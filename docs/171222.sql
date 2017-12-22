@@ -16,20 +16,6 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`flaskblog2` /*!40100 DEFAULT CHARACTER 
 
 USE `flaskblog2`;
 
-/*Table structure for table `auth_permission_routers` */
-
-DROP TABLE IF EXISTS `auth_permission_routers`;
-
-CREATE TABLE `auth_permission_routers` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `permission_id` int(10) unsigned NOT NULL,
-  `is_menu` enum('N','Y') NOT NULL DEFAULT 'N',
-  `router` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-/*Data for the table `auth_permission_routers` */
-
 /*Table structure for table `auth_permissions` */
 
 DROP TABLE IF EXISTS `auth_permissions`;
@@ -38,9 +24,14 @@ CREATE TABLE `auth_permissions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `auth_permissions` */
+
+insert  into `auth_permissions`(`id`,`name`) values (1,'管理员管理权限');
+insert  into `auth_permissions`(`id`,`name`) values (2,'文章管理');
+insert  into `auth_permissions`(`id`,`name`) values (3,'系统管理');
+insert  into `auth_permissions`(`id`,`name`) values (4,'后台基础页面');
 
 /*Table structure for table `auth_role_permission_ln` */
 
@@ -57,6 +48,8 @@ CREATE TABLE `auth_role_permission_ln` (
 
 insert  into `auth_role_permission_ln`(`permission_id`,`role_id`) values (1,1);
 insert  into `auth_role_permission_ln`(`permission_id`,`role_id`) values (2,1);
+insert  into `auth_role_permission_ln`(`permission_id`,`role_id`) values (4,1);
+insert  into `auth_role_permission_ln`(`permission_id`,`role_id`) values (3,1);
 
 /*Table structure for table `auth_roles` */
 
@@ -71,7 +64,33 @@ CREATE TABLE `auth_roles` (
 
 /*Data for the table `auth_roles` */
 
-insert  into `auth_roles`(`id`,`name`,`description`) values (1,'superuser','超级管理员');
+insert  into `auth_roles`(`id`,`name`,`description`) values (1,'超级管理员','超级管理员');
+
+/*Table structure for table `auth_routers` */
+
+DROP TABLE IF EXISTS `auth_routers`;
+
+CREATE TABLE `auth_routers` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `permission_id` int(10) unsigned NOT NULL,
+  `category` enum('menu','not menu') NOT NULL DEFAULT 'not menu',
+  `router` varchar(100) NOT NULL,
+  `parent_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `auth_routers` */
+
+insert  into `auth_routers`(`id`,`name`,`permission_id`,`category`,`router`,`parent_id`) values (1,'角色列表',1,'menu','/admin/role',6);
+insert  into `auth_routers`(`id`,`name`,`permission_id`,`category`,`router`,`parent_id`) values (2,'管理员列表',1,'menu','/admin/user',6);
+insert  into `auth_routers`(`id`,`name`,`permission_id`,`category`,`router`,`parent_id`) values (3,'权限列表',1,'menu','/admin/permission',6);
+insert  into `auth_routers`(`id`,`name`,`permission_id`,`category`,`router`,`parent_id`) values (4,'路由列表',1,'menu','/admin/router',9);
+insert  into `auth_routers`(`id`,`name`,`permission_id`,`category`,`router`,`parent_id`) values (6,'管理员管理',1,'menu','/admin/auth/*',0);
+insert  into `auth_routers`(`id`,`name`,`permission_id`,`category`,`router`,`parent_id`) values (9,'文章列表',2,'menu','/admin/article',10);
+insert  into `auth_routers`(`id`,`name`,`permission_id`,`category`,`router`,`parent_id`) values (10,'文章管理',2,'menu','/admin/article/*',0);
+insert  into `auth_routers`(`id`,`name`,`permission_id`,`category`,`router`,`parent_id`) values (11,'/admin/',4,'not menu','/admin/',0);
+insert  into `auth_routers`(`id`,`name`,`permission_id`,`category`,`router`,`parent_id`) values (12,'/admin/welcome',4,'not menu','/admin/welcome',0);
 
 /*Table structure for table `auth_users` */
 
@@ -86,12 +105,11 @@ CREATE TABLE `auth_users` (
   `created_at` datetime NOT NULL,
   `role_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `auth_users` */
 
 insert  into `auth_users`(`id`,`name`,`email`,`password`,`active`,`created_at`,`role_id`) values (1,'test1','test1','$pbkdf2-sha512$25000$5vy/N2bMec9Z650zJiQkpA$C2HmzcwKNJTDoUa/M4v/DIUnM1pkX4mn1XlSoVEbwqrvRQddSF.XVkeqi0uXXOOUjPFVu2vGqSZSUaYoXbEI/w','true','2017-12-21 09:53:57',1);
-insert  into `auth_users`(`id`,`name`,`email`,`password`,`active`,`created_at`,`role_id`) values (2,'test2','test2','$pbkdf2-sha512$25000$7F1rTUlJ6R3j/D.H8F7L.Q$NlPv6BuuxcGnCmS6yDxB0cexXrlxh5WPYTXtV9QX8usm7AqEviVJxbZDn8XsYvNM0AiAggsExkBRxYKmEWQWFw','true','2017-12-20 10:00:00',0);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

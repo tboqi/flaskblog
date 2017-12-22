@@ -17,13 +17,21 @@ babel = Babel(app)
 app.config['BABEL_DEFAULT_LOCALE'] = 'zh_CN'
 
 
+role_permission_ln = db.Table(
+    'auth_role_permission_ln',
+    db.Column('permission_id', db.Integer(),
+              db.ForeignKey('auth_permissions.id')),
+    db.Column('role_id', db.Integer(), db.ForeignKey('auth_roles.id'))
+)
+
+
 class Role(db.Model, RoleMixin):
     __tablename__ = 'auth_roles'
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
-    # users = db.relationship("User",
-    #                         backref=db.backref('auth_users'))
+    permissions = db.relationship('Permission', secondary=role_permission_ln,
+                                  backref=db.backref('auth_roles', lazy='dynamic'))
 
     def __str__(self):
         return self.name
@@ -32,7 +40,26 @@ class Role(db.Model, RoleMixin):
 class Permission(db.Model, RoleMixin):
     __tablename__ = 'auth_permissions'
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(80), unique=True)
+    name = db.Column(db.String(80))
+    # routers = db.relationship("Router",
+    #                           backref=db.backref('auth_routers'))
+
+    def __str__(self):
+        return self.name
+
+
+class Router(db.Model, UserMixin):
+    __tablename__ = 'auth_routers'
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String(255))
+    router = db.Column(db.String(255))
+    name = db.Column(db.String(255))
+    permission = db.relationship('Permission',
+                                 backref=db.backref('auth_permissions'))
+    permission_id = db.Column(db.Integer, db.ForeignKey('auth_permissions.id'))
+    parent_id = db.Column(db.Integer, db.ForeignKey('auth_routers.id'))
+    parent = db.relationship('Router',
+                             backref=db.backref('auth_routers'), remote_side=[id])
 
     def __str__(self):
         return self.name
@@ -89,6 +116,10 @@ class RoleModelView(MyModelView):
 
 
 class PermissionModelView(MyModelView):
+    form_excluded_columns = ['routers']
+
+
+class PermissionModelView(MyModelView):
     column_labels = {'name': '名称'}
 
 
@@ -128,6 +159,7 @@ admin = flask_admin.Admin(app, template_mode='bootstrap3')
 admin.add_view(RoleModelView(Role, db.session))
 admin.add_view(UserModelView(User, db.session))
 admin.add_view(PermissionModelView(Permission, db.session))
+admin.add_view(MyModelView(Router, db.session))
 
 # define a context processor for merging flask-admin's template context into the
 # flask-security views.
