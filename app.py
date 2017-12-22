@@ -20,8 +20,8 @@ class Role(db.Model, RoleMixin):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
-    users = db.relationship("User",
-                            backref=db.backref('auth_users'))
+    # users = db.relationship("User",
+    #                         backref=db.backref('auth_users'))
 
     def __str__(self):
         return self.name
@@ -64,15 +64,17 @@ class MyModelView(sqla.ModelView):
         """
         Override builtin _handle_view in order to redirect users when a view is not accessible.
         """
-        if not self.is_accessible():
-            if current_user.is_authenticated:
-                # permission denied
-                abort(403)
-            else:
-                # login
-                return redirect(url_for('security.login', next=request.url))
+        # if not self.is_accessible():
+        #     if current_user.is_authenticated:
+        #         # permission denied
+        #         abort(403)
+        #     else:
+        #         # login
+        #         return redirect(url_for('security.login', next=request.url))
 
-# Flask views
+
+class RoleModelView(MyModelView):
+    column_labels = {'name': '角色名', 'description': '描述'}
 
 
 @app.route('/')
@@ -102,7 +104,7 @@ admin = flask_admin.Admin(
 )
 
 # Add model views
-admin.add_view(MyModelView(Role, db.session))
+admin.add_view(RoleModelView(Role, db.session))
 admin.add_view(MyModelView(User, db.session))
 
 # define a context processor for merging flask-admin's template context into the
