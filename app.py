@@ -53,9 +53,6 @@ security = Security(app, user_datastore)
 # Create customized model view class
 class MyModelView(sqla.ModelView):
 
-    form_excluded_columns = ['created_at']
-    column_exclude_list = ['password', ]
-
     def is_accessible(self):
         if not current_user.is_active or not current_user.is_authenticated:
             return False
@@ -80,6 +77,14 @@ class MyModelView(sqla.ModelView):
 
 class RoleModelView(MyModelView):
     column_labels = {'name': '角色名', 'description': '描述'}
+
+
+class UserModelView(MyModelView):
+    form_excluded_columns = ['created_at']
+    column_exclude_list = ['password', ]
+
+    column_labels = {'role': '角色', 'name': '用户名', 'password': '密码',
+                     'active': '激活', 'created_at': '创建时间'}
 
 
 @app.route('/')
@@ -108,7 +113,7 @@ admin = flask_admin.Admin(app, template_mode='bootstrap2')
 
 # Add model views
 admin.add_view(RoleModelView(Role, db.session))
-admin.add_view(MyModelView(User, db.session))
+admin.add_view(UserModelView(User, db.session))
 
 # define a context processor for merging flask-admin's template context into the
 # flask-security views.
