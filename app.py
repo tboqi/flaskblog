@@ -153,6 +153,8 @@ class ArticleModelView(MyModelView):
     column_labels = {'author': '作者', 'title': '标题',
                      'created_at': '创建时间', 'updated_at': '更新时间'}
 
+    create_modal = True
+
 
 @app.route('/')
 def index():
