@@ -146,6 +146,14 @@ class UserModelView(MyModelView):
                      'active': '激活', 'created_at': '创建时间'}
 
 
+class ArticleModelView(MyModelView):
+    form_excluded_columns = ['created_at', 'updated_at', 'author', 'author_id']
+    column_exclude_list = ['content', ]
+
+    column_labels = {'author': '作者', 'title': '标题',
+                     'created_at': '创建时间', 'updated_at': '更新时间'}
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -172,7 +180,7 @@ admin.add_view(RoleModelView(Role, db.session))
 admin.add_view(UserModelView(User, db.session))
 admin.add_view(PermissionModelView(Permission, db.session))
 admin.add_view(MyModelView(Router, db.session))
-admin.add_view(MyModelView(Article, db.session))
+admin.add_view(ArticleModelView(Article, db.session))
 
 # define a context processor for merging flask-admin's template context into the
 # flask-security views.
