@@ -8,6 +8,9 @@ import flask_admin
 from flask_admin.contrib import sqla
 from flask_admin import helpers as admin_helpers
 from flask_babelex import Babel
+from wtforms import TextAreaField
+from wtforms.widgets import TextArea
+
 
 # Create Flask application
 app = Flask(__name__)
@@ -132,9 +135,6 @@ class RoleModelView(MyModelView):
 
 class PermissionModelView(MyModelView):
     form_excluded_columns = ['routers']
-
-
-class PermissionModelView(MyModelView):
     column_labels = {'name': '名称'}
 
 
@@ -146,12 +146,32 @@ class UserModelView(MyModelView):
                      'active': '激活', 'created_at': '创建时间'}
 
 
+class CKTextAreaWidget(TextArea):
+
+    def __call__(self, field, **kwargs):
+        if kwargs.get('class'):
+            kwargs['class'] += ' ckeditor'
+        else:
+            kwargs.setdefault('class', 'ckeditor')
+        return super(CKTextAreaWidget, self).__call__(field, **kwargs)
+
+
+class CKTextAreaField(TextAreaField):
+    widget = CKTextAreaWidget()
+
+
 class ArticleModelView(MyModelView):
     # form_excluded_columns = ['created_at', 'updated_at', 'author', 'author_id']
     column_exclude_list = ['content', ]
 
     column_labels = {'author': '作者', 'title': '标题', 'content': '内容',
                      'created_at': '创建时间', 'updated_at': '更新时间'}
+
+    extra_js = ['//cdn.ckeditor.com/4.6.0/standard/ckeditor.js']
+
+    form_overrides = {
+        'content': CKTextAreaField
+    }
 
 
 @app.route('/')
