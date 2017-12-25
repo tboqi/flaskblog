@@ -147,13 +147,11 @@ class UserModelView(MyModelView):
 
 
 class ArticleModelView(MyModelView):
-    form_excluded_columns = ['created_at', 'updated_at', 'author', 'author_id']
+    # form_excluded_columns = ['created_at', 'updated_at', 'author', 'author_id']
     column_exclude_list = ['content', ]
 
-    column_labels = {'author': '作者', 'title': '标题',
+    column_labels = {'author': '作者', 'title': '标题', 'content': '内容',
                      'created_at': '创建时间', 'updated_at': '更新时间'}
-
-    create_modal = True
 
 
 @app.route('/')
