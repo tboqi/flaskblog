@@ -1,4 +1,5 @@
 import os
+import datetime
 from flask import Flask, url_for, redirect, render_template, request, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore, \
@@ -51,7 +52,7 @@ class Permission(db.Model, RoleMixin):
         return self.name
 
 
-class Router(db.Model, UserMixin):
+class Router(db.Model):
     __tablename__ = 'auth_routers'
     id = db.Column(db.Integer, primary_key=True)
     category = db.Column(db.String(255))
@@ -84,7 +85,7 @@ class User(db.Model, UserMixin):
         return self.name
 
 
-class Article(db.Model, UserMixin):
+class Article(db.Model):
     __tablename__ = 'articles'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
@@ -161,7 +162,7 @@ class CKTextAreaField(TextAreaField):
 
 
 class ArticleModelView(MyModelView):
-    # form_excluded_columns = ['created_at', 'updated_at', 'author', 'author_id']
+    form_excluded_columns = ['created_at', 'updated_at', 'author', 'author_id']
     column_exclude_list = ['content', ]
 
     column_labels = {'author': '作者', 'title': '标题', 'content': '内容',
@@ -172,6 +173,14 @@ class ArticleModelView(MyModelView):
     form_overrides = {
         'content': CKTextAreaField
     }
+
+    def on_model_change(self, form, model, is_created):
+        if is_created:
+            model.created_at = datetime.datetime.today()
+            model.author_id = current_user.id
+            pass
+        model.updated_at = datetime.datetime.today()
+        pass
 
 
 @app.route('/')
