@@ -30,5 +30,6 @@ admin.add_view(model.article.CategoryView(
 
 
 if __name__ == '__main__':
+    base.app.jinja_env.auto_reload = True
     # Start app
     base.app.run(debug=True, port=5000)

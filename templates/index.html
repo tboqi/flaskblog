@@ -7,22 +7,22 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="http://tbq_static.com/bootstrap/docs/favicon.ico">
+    <link rel="icon" href="{{ url_for('static', filename='bootstrap/docs/favicon.ico') }}">
 
     <title>我的博客</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="http://tbq_static.com/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="http://tbq_static.com/bootstrap/docs/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='bootstrap/docs/assets/css/ie10-viewport-bug-workaround.css') }}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="http://tbq_static.com/bootstrap/docs/examples/blog/blog.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='bootstrap/docs/examples/blog/blog.css') }}" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="http://tbq_static.com/bootstrap/docs/assets/js/ie-emulation-modes-warning.js"></script>
+    <!--[if lt IE 9]><script src="{{ url_for('static', filename='assets/js/ie8-responsive-file-warning.js') }}></script><![endif]-->
+    <script src="{{ url_for('static', filename='bootstrap/docs/assets/js/ie-emulation-modes-warning.js') }}"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -36,7 +36,7 @@
     <div class="blog-masthead">
       <div class="container">
         <nav class="blog-nav">
-          <a class="blog-nav-item active" href="#">Home</a>
+          <a class="blog-nav-item active" href="/">首页</a>
           <a class="blog-nav-item" href="#">New features</a>
           <a class="blog-nav-item" href="#">Press</a>
           <a class="blog-nav-item" href="#">New hires</a>
@@ -172,9 +172,9 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="http://tbq_static.com/bootstrap/docs/assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="http://tbq_static.com/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{{ url_for('static', filename='bootstrap/docs/assets/js/vendor/jquery.min.js') }}"><\/script>')</script>
+    <script src="{{ url_for('static', filename='bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="http://tbq_static.com/bootstrap/docs/assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="{{ url_for('static', filename='bootstrap/docs/assets/js/ie10-viewport-bug-workaround.js') }}"></script>
   </body>
 </html>

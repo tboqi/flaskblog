@@ -157,10 +157,3 @@ def admin_index():
 @app.route('/admin/welcome')
 def admin_welcome():
     return request.path
-
-# Create admin
-
-# Add model views
-
-# define a context processor for merging flask-admin's template context into the
-# flask-security views.
