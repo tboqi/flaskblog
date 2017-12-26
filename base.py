@@ -5,7 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security,  \
     UserMixin, RoleMixin, login_required, current_user
 from flask_security.utils import encrypt_password
-import flask_admin
 from flask_admin.contrib import sqla
 from flask_admin import helpers as admin_helpers
 from flask_babelex import Babel
@@ -85,21 +84,6 @@ class User(db.Model, UserMixin):
         return self.name
 
 
-class Article(db.Model):
-    __tablename__ = 'articles'
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(255))
-    content = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.DateTime())
-    updated_at = db.Column(db.DateTime())
-    author = db.relationship('User',
-                             backref=db.backref('auth_users'))
-    author_id = db.Column(db.Integer, db.ForeignKey('auth_users.id'))
-
-    def __str__(self):
-        return self.name
-
-
 # Create customized model view class
 class MyModelView(sqla.ModelView):
 
@@ -156,28 +140,6 @@ class CKTextAreaField(TextAreaField):
     widget = CKTextAreaWidget()
 
 
-class ArticleModelView(MyModelView):
-    form_excluded_columns = ['created_at', 'updated_at', 'author', 'author_id']
-    column_exclude_list = ['content', ]
-
-    column_labels = {'author': '作者', 'title': '标题', 'content': '内容',
-                     'created_at': '创建时间', 'updated_at': '更新时间'}
-
-    extra_js = ['//cdn.ckeditor.com/4.6.0/standard/ckeditor.js']
-
-    form_overrides = {
-        'content': CKTextAreaField
-    }
-
-    def on_model_change(self, form, model, is_created):
-        if is_created:
-            model.created_at = datetime.datetime.today()
-            model.author_id = current_user.id
-            pass
-        model.updated_at = datetime.datetime.today()
-        pass
-
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -197,14 +159,8 @@ def admin_welcome():
     return request.path
 
 # Create admin
-admin = flask_admin.Admin(app, template_mode='bootstrap3')
 
 # Add model views
-admin.add_view(RoleModelView(Role, db.session))
-admin.add_view(UserModelView(User, db.session))
-admin.add_view(PermissionModelView(Permission, db.session))
-admin.add_view(MyModelView(Router, db.session))
-admin.add_view(ArticleModelView(Article, db.session))
 
 # define a context processor for merging flask-admin's template context into the
 # flask-security views.
