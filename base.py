@@ -140,20 +140,6 @@ class CKTextAreaField(TextAreaField):
     widget = CKTextAreaWidget()
 
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-
-@app.route('/admin/')
-def admin_index():
-    # or not current_user.has_role('superuser')
-    if not current_user.is_active or not current_user.is_authenticated:
-        return redirect(url_for('security.login', next=request.url))
-
-    return render_template('admin/index.html')
-
-
 @app.route('/admin/welcome')
 def admin_welcome():
     return request.path
