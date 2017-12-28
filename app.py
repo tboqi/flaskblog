@@ -21,7 +21,15 @@ def security_context_processor():
     )
 
 
-admin = flask_admin.Admin(base.app, template_mode='bootstrap3')
+class MyHomeView(flask_admin.AdminIndexView):
+
+    @flask_admin.expose('/')
+    def index(self):
+        arg1 = 'Hello'
+        return arg1
+        # return self.render('admin/myhome.html', arg1=arg1)
+admin = flask_admin.Admin(
+    base.app, template_mode='bootstrap3', index_view=MyHomeView())
 admin.add_view(base.RoleModelView(base.Role, base.db.session))
 admin.add_view(base.UserModelView(base.User, base.db.session))
 admin.add_view(base.PermissionModelView(base.Permission, base.db.session))
