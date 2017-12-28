@@ -146,8 +146,3 @@ class CKTextAreaWidget(TextArea):
 
 class CKTextAreaField(TextAreaField):
     widget = CKTextAreaWidget()
-
-
-@app.route('/admin/welcome')
-def admin_welcome():
-    return request.path
