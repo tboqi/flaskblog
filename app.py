@@ -2,7 +2,9 @@ import base
 from flask_security import Security, SQLAlchemyUserDatastore
 import model.article
 import flask_admin
-from flask import render_template
+from flask import Flask, url_for, redirect, render_template, request, abort
+from flask_admin import helpers as admin_helpers
+
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(base.db, base.User, base.Role)
@@ -35,13 +37,16 @@ def index():
     return render_template('index.html')
 
 
-@base.app.route('/admin/')
-def admin_index():
-    # or not current_user.has_role('superuser')
-    if not current_user.is_active or not current_user.is_authenticated:
-        return redirect(url_for('security.login', next=request.url))
+# @base.app.route('/admin/')
+# def admin_index():
+#     return 321
+    # if not current_user.role:
+    #     return 123
+    # # or not current_user.has_role('superuser')
+    # if not current_user.is_active or not current_user.is_authenticated:
+    #     return redirect(url_for('security.login', next=request.url))
 
-    return render_template('admin/index.html')
+    # return render_template('admin/index.html')
 
 if __name__ == '__main__':
     base.app.jinja_env.auto_reload = True

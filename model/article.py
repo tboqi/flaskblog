@@ -55,8 +55,6 @@ class ArticleView(MyModelView):
         model.tags.strip(',')
         model.tags = ',' + model.tags + ','
 
-        pass
-
 
 class CategoryView(MyModelView):
     form_excluded_columns = ['articles']

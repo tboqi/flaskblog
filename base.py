@@ -10,6 +10,7 @@ from flask_admin import helpers as admin_helpers
 from flask_babelex import Babel
 from wtforms import TextAreaField
 from wtforms.widgets import TextArea
+import datetime
 
 
 # Create Flask application
@@ -124,6 +125,13 @@ class UserModelView(MyModelView):
 
     column_labels = {'role': '角色', 'name': '用户名', 'password': '密码',
                      'active': '激活', 'created_at': '创建时间'}
+
+    def on_model_change(self, form, model, is_created):
+        if is_created:
+            model.created_at = datetime.datetime.today()
+            pass
+
+        model.updated_at = datetime.datetime.today()
 
 
 class CKTextAreaWidget(TextArea):
