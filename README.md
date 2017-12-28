@@ -1,8 +1,8 @@
 # flaskblog
 
-virtualenv -p python3 .env_py3
+virtualenv -p python3 env
 
-source .env_py3/bin/activate
+source env/bin/activate
 
 pip install -r 'requirements.txt'
 
