@@ -1,10 +1,13 @@
+# -*- coding: utf-8 -*-
 import base
 import model.article
 import flask_admin
 from flask import Flask, url_for, redirect, render_template, request, abort
 from flask_admin import helpers as admin_helpers
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, current_user
-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(base.db, base.User, base.Role)

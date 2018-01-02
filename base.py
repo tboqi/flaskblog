@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import datetime
 from flask import Flask, url_for, redirect, render_template, request, abort
