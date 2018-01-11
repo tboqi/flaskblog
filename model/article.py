@@ -14,8 +14,8 @@ class Article(db.Model):
     author = db.relationship('User',
                              backref=db.backref('auth_users'))
     author_id = db.Column(db.Integer, db.ForeignKey('auth_users.id'))
-    category = db.relationship('Category',
-                               backref=db.backref('article_categories'))
+    # category = db.relationship('Category',
+    # backref=db.backref('article_categories', lazy='dynamic'), uselist=False)
     category_id = db.Column(db.Integer, db.ForeignKey('article_categories.id'))
     tags = db.Column(db.String(80))
 
@@ -27,13 +27,16 @@ class Category(db.Model):
     __tablename__ = 'article_categories'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40))
+    articles = db.relationship('Article', backref='articles',
+                               lazy='dynamic')
 
     def __str__(self):
         return self.name
 
 
 class ArticleView(MyModelView):
-    form_excluded_columns = ['created_at', 'updated_at', 'author', 'author_id']
+    form_excluded_columns = ['created_at', 'updated_at',
+                             'author', 'author_id']
     column_exclude_list = ['content', ]
 
     column_labels = {'author': '作者', 'title': '标题', 'content': '内容',
