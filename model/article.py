@@ -17,6 +17,7 @@ class Article(db.Model):
                                backref=db.backref('article_categories'))
     category_id = db.Column(db.Integer, db.ForeignKey('article_categories.id'))
     tags = db.Column(db.String(80))
+    summary = db.Column(db.Text)
 
     def __str__(self):
         return self.title

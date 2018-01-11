@@ -58,7 +58,8 @@ def articlesByCate():
 
 @base.app.route('/article/view')
 def articleView():
-    return render_template('index.html', categories=model.article.Category.query.all())
+    # searchword = request.args.get('q', '')
+    return render_template('article_view.html', categories=model.article.Category.query.all(), article=model.article.Article.query.filter(model.article.Article.id == request.args.get('id')).first())
 
 if __name__ == '__main__':
     base.app.jinja_env.auto_reload = True

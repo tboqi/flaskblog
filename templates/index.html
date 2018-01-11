@@ -52,12 +52,13 @@
       </div>
       <div class="row">
         <div class="col-sm-8 blog-main">
+          {% block content %}
           {% for article in articles %}
           <div class="blog-post">
             <h2 class="blog-post-title">{{ article.title }}</h2>
-            <p class="blog-post-meta">December 23, 2013 | <a href="{{ url_for('articleView',id=1) }}">查看全文</a></p>
+            <p class="blog-post-meta">{{ article.updated_at }} | <a href="{{ url_for('articleView',id=1) }}">查看全文</a></p>
 
-            {{ article.content|safe }}
+            <p>{{ article.summary|safe }}</p>
           </div><!-- /.blog-post -->
           {% endfor %}
 
@@ -67,6 +68,7 @@
               <li><a href="#">Next</a></li>
             </ul>
           </nav>
+          {% endblock %}
         </div><!-- /.blog-main -->
 
         <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
