@@ -48,7 +48,8 @@ admin.add_view(CategoryView(Category, base.db.session))
 def index():
     page = int(request.args.get('page', 1))
     per_page = 10
-    paginate = Article.query.paginate(page, per_page, False)
+    paginate = Article.query.order_by(Article.id.desc())
+    paginate = paginate.paginate(page, per_page, False)
     object_list = paginate.items
     return render_template('index.html',
                            categories=Category.query.all(),
@@ -59,8 +60,10 @@ def index():
 def articlesByCate():
     page = int(request.args.get('page', 1))
     per_page = 10
-    paginate = Article.query.filter(
-        Article.category_id == request.args.get('id')).paginate(page, per_page, False)
+    paginate = Article.query
+    paginate = paginate.filter(Article.category_id == request.args.get('id'))
+    paginate = paginate.order_by(Article.id.desc())
+    paginate = paginate.paginate(page, per_page, False)
     object_list = paginate.items
     return render_template('index.html',
                            categories=Category.query.all(),
