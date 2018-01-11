@@ -77,6 +77,8 @@ class MyModelView(sqla.ModelView):
                 return redirect(url_for('security.login', next=request.url))
 
 # Flask views
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -95,6 +97,8 @@ admin.add_view(MyModelView(User, db.session))
 
 # define a context processor for merging flask-admin's template context into the
 # flask-security views.
+
+
 @security.context_processor
 def security_context_processor():
     return dict(
@@ -142,8 +146,10 @@ def build_sample_db():
         ]
 
         for i in range(len(first_names)):
-            tmp_email = first_names[i].lower() + "." + last_names[i].lower() + "@example.com"
-            tmp_pass = ''.join(random.choice(string.ascii_lowercase + string.digits) for i in range(10))
+            tmp_email = first_names[i].lower() + "." + \
+                last_names[i].lower() + "@example.com"
+            tmp_pass = ''.join(random.choice(
+                string.ascii_lowercase + string.digits) for i in range(10))
             user_datastore.create_user(
                 first_name=first_names[i],
                 last_name=last_names[i],
@@ -163,4 +169,4 @@ if __name__ == '__main__':
         build_sample_db()
 
     # Start app
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
