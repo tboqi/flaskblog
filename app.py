@@ -48,8 +48,17 @@ admin.add_view(model.article.CategoryView(
 
 @base.app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', categories=model.article.Category.query.all(), articles=model.article.Article.query.all())
 
+
+@base.app.route('/article/listbycate')
+def articlesByCate():
+    return render_template('index.html', categories=model.article.Category.query.all())
+
+
+@base.app.route('/article/view')
+def articleView():
+    return render_template('index.html', categories=model.article.Category.query.all())
 
 if __name__ == '__main__':
     base.app.jinja_env.auto_reload = True
