@@ -12,7 +12,7 @@ MySQL - 5.7.18-log : Database - flaskblog2
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`flaskblog2` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`flaskblog2` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
 USE `flaskblog2`;
 
@@ -24,11 +24,11 @@ CREATE TABLE `article_categories` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(40) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `article_categories` */
 
-insert  into `article_categories`(`id`,`name`) values (1,'aaa');
+insert  into `article_categories`(`id`,`name`) values (6,'dfgdfg');
 
 /*Table structure for table `articles` */
 
@@ -43,12 +43,14 @@ CREATE TABLE `articles` (
   `author_id` int(10) unsigned NOT NULL,
   `category_id` int(10) unsigned NOT NULL,
   `tags` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+  PRIMARY KEY (`id`),
+  KEY `cid` (`category_id`),
+  CONSTRAINT `cid` FOREIGN KEY (`category_id`) REFERENCES `article_categories` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `articles` */
 
-insert  into `articles`(`id`,`title`,`content`,`created_at`,`updated_at`,`author_id`,`category_id`,`tags`) values (6,'sdfsd','<p>sfsfs</p>\r\n','2017-12-26 11:34:17','2017-12-26 11:34:17',1,1,',sd,fdg,');
+insert  into `articles`(`id`,`title`,`content`,`created_at`,`updated_at`,`author_id`,`category_id`,`tags`) values (1,'斯蒂芬森的','<p>斯蒂芬斯蒂芬斯蒂芬森</p>\r\n','2018-01-11 11:19:22','2018-01-11 11:19:22',2,6,',斯蒂芬森,');
 
 /*Table structure for table `auth_permissions` */
 
@@ -75,7 +77,9 @@ CREATE TABLE `auth_role_permission_ln` (
   `permission_id` int(10) unsigned NOT NULL,
   `role_id` int(10) unsigned NOT NULL,
   KEY `userId` (`permission_id`),
-  KEY `roleId` (`role_id`)
+  KEY `roleId` (`role_id`),
+  CONSTRAINT `pid` FOREIGN KEY (`permission_id`) REFERENCES `auth_permissions` (`id`),
+  CONSTRAINT `rid` FOREIGN KEY (`role_id`) REFERENCES `auth_roles` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `auth_role_permission_ln` */
@@ -139,11 +143,12 @@ CREATE TABLE `auth_users` (
   `created_at` datetime NOT NULL,
   `role_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `auth_users` */
 
 insert  into `auth_users`(`id`,`name`,`email`,`password`,`active`,`created_at`,`role_id`) values (1,'test1','test1','$pbkdf2-sha512$25000$5vy/N2bMec9Z650zJiQkpA$C2HmzcwKNJTDoUa/M4v/DIUnM1pkX4mn1XlSoVEbwqrvRQddSF.XVkeqi0uXXOOUjPFVu2vGqSZSUaYoXbEI/w','true','2017-12-21 09:53:57',1);
+insert  into `auth_users`(`id`,`name`,`email`,`password`,`active`,`created_at`,`role_id`) values (2,'admin','admin','$pbkdf2-sha512$25000$P6c0RkgJwbhXqjVmbM1Ziw$0V.q7Nn6aGmYtboK1Py7Z4Oq0mI4t/btvKU0Ix3LOLdtNrf7IkvxAFErsv7LmKJXsjCT14MC8KlE03ki2Eeu5g','true','2017-12-28 14:57:02',1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
