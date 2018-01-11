@@ -72,9 +72,15 @@ def articlesByCate():
 
 @base.app.route('/article/view')
 def articleView():
+    prevArt = Article.query.filter(Article.id > request.args.get(
+        'id')).order_by(Article.id.asc()).first()
+    nextArt = Article.query.filter(Article.id < request.args.get(
+        'id')).order_by(Article.id.desc()).first()
     return render_template('article_view.html',
                            categories=Category.query.all(),
-                           article=Article.query.filter(Article.id == request.args.get('id')).one())
+                           article=Article.query.filter(
+                               Article.id == request.args.get('id')).one(),
+                           prevArt=prevArt, nextArt=nextArt)
 
 if __name__ == '__main__':
     base.app.jinja_env.auto_reload = True
