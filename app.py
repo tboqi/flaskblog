@@ -57,8 +57,14 @@ def index():
 
 @base.app.route('/article/listbycate')
 def articlesByCate():
+    page = int(request.args.get('page', 1))
+    per_page = 10
+    paginate = Article.query.filter(
+        Article.category_id == request.args.get('id')).paginate(page, per_page, False)
+    object_list = paginate.items
     return render_template('index.html',
-                           categories=Category.query.all())
+                           categories=Category.query.all(),
+                           articles=object_list, paginate=paginate, cate_id=int(request.args.get('id')))
 
 
 @base.app.route('/article/view')

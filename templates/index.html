@@ -36,9 +36,9 @@
     <div class="blog-masthead">
       <div class="container">
         <nav class="blog-nav">
-          <a class="blog-nav-item active" href="/">首页</a>
+          <a class="blog-nav-item{% if request.path == '/' %} active{% endif %}" href="/">首页</a>
           {% for category in categories %}
-          <a class="blog-nav-item" href="{{ url_for('articlesByCate',id=category.id) }}">{{ category.name }}</a>
+          <a class="blog-nav-item{% if cate_id==category.id %} active{% endif %}" href="{{ url_for('articlesByCate',id=category.id) }}">{{ category.name }}</a>
           {% endfor %}
           <a class="blog-nav-item" href="{{ url_for('admin.index') }}">管理</a>
         </nav>
