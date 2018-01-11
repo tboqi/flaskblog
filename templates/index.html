@@ -56,7 +56,10 @@
           {% for article in articles %}
           <div class="blog-post">
             <h2 class="blog-post-title">{{ article.title }}</h2>
-            <p class="blog-post-meta">{{ article.updated_at }} | <a href="{{ url_for('articleView',id=1) }}">查看全文</a></p>
+            <p class="blog-post-meta">{{ article.updated_at }}
+              | 分类: <a href="{{ url_for('articlesByCate',id=article.category.id) }}">{{ article.category.name }}</a>
+              | <a href="{{ url_for('articleView',id=1) }}">查看全文</a>
+            </p>
 
             <p>{{ article.summary|safe }}</p>
           </div><!-- /.blog-post -->
@@ -64,8 +67,12 @@
 
           <nav>
             <ul class="pager">
-              <li><a href="#">Previous</a></li>
-              <li><a href="#">Next</a></li>
+              {% if paginate.has_prev %}
+              <li><a href="?page={{ paginate.prev_num }}">上一页</a></li>
+              {% endif %}
+              {% if paginate.has_next %}
+              <li><a href="?page={{ paginate.next_num }}">下一页</a></li>
+              {% endif %}
             </ul>
           </nav>
           {% endblock %}

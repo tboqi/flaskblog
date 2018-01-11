@@ -1,9 +1,9 @@
 import base
-import model.article
 import flask_admin
 from flask import Flask, url_for, redirect, render_template, request, abort
 from flask_admin import helpers as admin_helpers
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, current_user
+from model.article import Article, Category, ArticleView, CategoryView
 
 
 # Setup Flask-Security
@@ -40,26 +40,32 @@ admin.add_view(base.RoleModelView(base.Role, base.db.session))
 admin.add_view(base.UserModelView(base.User, base.db.session))
 admin.add_view(base.PermissionModelView(base.Permission, base.db.session))
 admin.add_view(base.MyModelView(base.Router, base.db.session))
-admin.add_view(model.article.ArticleView(
-    model.article.Article, base.db.session))
-admin.add_view(model.article.CategoryView(
-    model.article.Category, base.db.session))
+admin.add_view(ArticleView(Article, base.db.session))
+admin.add_view(CategoryView(Category, base.db.session))
 
 
 @base.app.route('/')
 def index():
-    return render_template('index.html', categories=model.article.Category.query.all(), articles=model.article.Article.query.all())
+    page = int(request.args.get('page', 1))
+    per_page = 10
+    paginate = Article.query.paginate(page, per_page, False)
+    object_list = paginate.items
+    return render_template('index.html',
+                           categories=Category.query.all(),
+                           articles=object_list, paginate=paginate)
 
 
 @base.app.route('/article/listbycate')
 def articlesByCate():
-    return render_template('index.html', categories=model.article.Category.query.all())
+    return render_template('index.html',
+                           categories=Category.query.all())
 
 
 @base.app.route('/article/view')
 def articleView():
-    # searchword = request.args.get('q', '')
-    return render_template('article_view.html', categories=model.article.Category.query.all(), article=model.article.Article.query.filter(model.article.Article.id == request.args.get('id')).first())
+    return render_template('article_view.html',
+                           categories=Category.query.all(),
+                           article=Article.query.filter(Article.id == request.args.get('id')).one())
 
 if __name__ == '__main__':
     base.app.jinja_env.auto_reload = True
