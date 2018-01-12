@@ -72,6 +72,9 @@ def articlesByCate():
     paginate = paginate.paginate(page, per_page, False)
     object_list = paginate.items
     category = Category.query.get(int(request.args.get('id')))
+    pageTitle = '分类:' + category.name + '的所有文章'
+    seo = {'title': '一只小虫吞太阳', 'description': pageTitle,
+           'keywords': category.name}
     return render_template('index.html',
                            categories=Category.query.all(), pageTitle='分类:' + category.name + '的所有文章', seo=seo,
                            newArticles=Article.query.order_by(
