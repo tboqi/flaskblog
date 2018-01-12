@@ -5,12 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="{{ url_for('static', filename='bootstrap/docs/favicon.ico') }}">
-
-    <title>我的博客</title>
-
+    {% block seo %}
+    <title>{{ pageTitle }} - {{ seo.title }}</title>
+    <meta name="description" content="{{ seo.description }}">
+    <meta name="keywords" content="{{ seo.keywords }}">
+    {% endblock %}
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('static', filename='bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
 
@@ -47,8 +48,8 @@
 
     <div class="container">
       <div class="blog-header">
-        <h1 class="blog-title">一只小虫吞太阳</h1>
-        <p class="lead blog-description">各种杂谈及技术的记录, 记录生活与学习</p>
+        <h1 class="blog-title">{{ seo.title }}</h1>
+        <p class="lead blog-description">{{ seo.description }}</p>
       </div>
       <div class="row">
         <div class="col-sm-8 blog-main">
