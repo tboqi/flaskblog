@@ -110,6 +110,9 @@ def articleView(id):
     nextArt = Article.query.filter(
         Article.id < id).order_by(Article.id.desc()).first()
     article = Article.query.get(id)
+    article.view_num = article.view_num + 1
+    base.db.session.add(article)
+    base.db.session.commit()
     seo = {'title': title, 'description': article.summary,
            'keywords': article.tags.strip(',')}
     return render_template('article_view.html',

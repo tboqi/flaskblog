@@ -2,7 +2,8 @@
 {% block content %}
 <div class="blog-post">
   <h2 class="blog-post-title">{{ article.title }}</h2>
-  <p class="blog-post-meta">{{ article.updated_at }}
+  <p class="blog-post-meta">上次更新: {{ article.updated_at }}</p>
+  <p class="blog-post-meta">阅读次数: {{ article.view_num }}
     | 分类: <a href="{{ url_for('articlesByCate',cateid=article.category.id) }}">{{ article.category.name }}</a>
     | 标签: {% for tag in article.tags.split(',') %}<a href="{{ url_for('articlesByTag',tag=tag) }}">{{ tag }}</a> {% endfor %}
   </p>

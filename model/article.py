@@ -20,6 +20,7 @@ class Article(db.Model):
         'article_categories.id'), nullable=False)
     tags = db.Column(db.String(80), nullable=False)
     summary = db.Column(db.Text, nullable=False)
+    view_num = db.Column(db.Integer, default=0)
 
     def __str__(self):
         return self.title

@@ -55,10 +55,11 @@
           {% for article in articles %}
           <div class="blog-post">
             <h2 class="blog-post-title">{{ article.title }}</h2>
-            <p class="blog-post-meta">发布于: {{ article.created_at }}
+            <p class="blog-post-meta">发布于: {{ article.created_at }}</p>
+            <p class="blog-post-meta">阅读次数: {{ article.view_num }}
               | 分类: <a href="{{ url_for('articlesByCate',cateid=article.category.id) }}">{{ article.category.name }}</a>
               | 标签: {% for tag in article.tags.split(',') %}<a href="{{ url_for('articlesByTag',tag=tag) }}">{{ tag }}</a> {% endfor %}
-              | <a href="{{ url_for('articleView',id=1) }}">查看全文</a>
+              | <a href="{{ url_for('articleView',id=article.id) }}">查看全文</a>
             </p>
 
             <p>{{ article.summary|safe }}</p>
