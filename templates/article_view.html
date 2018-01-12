@@ -3,7 +3,7 @@
 <div class="blog-post">
   <h2 class="blog-post-title">{{ article.title }}</h2>
   <p class="blog-post-meta">{{ article.updated_at }}
-    | 分类: <a href="{{ url_for('articlesByCate',id=article.category.id) }}">{{ article.category.name }}</a>
+    | 分类: <a href="{{ url_for('articlesByCate',cateid=article.category.id) }}">{{ article.category.name }}</a>
     | 标签: {% for tag in article.tags.split(',') %}<a href="{{ url_for('articlesByTag',tag=tag) }}">{{ tag }}</a> {% endfor %}
   </p>
 

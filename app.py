@@ -63,16 +63,16 @@ def index():
                            articles=object_list, paginate=paginate)
 
 
-@base.app.route('/article/listbycate')
-def articlesByCate():
+@base.app.route('/article/listbycate/<cateid>')
+def articlesByCate(cateid):
     page = int(request.args.get('page', 1))
     per_page = 10
     paginate = Article.query
-    paginate = paginate.filter(Article.category_id == request.args.get('id'))
+    paginate = paginate.filter(Article.category_id == cateid)
     paginate = paginate.order_by(Article.id.desc())
     paginate = paginate.paginate(page, per_page, False)
     object_list = paginate.items
-    category = Category.query.get(int(request.args.get('id')))
+    category = Category.query.get(int(cateid))
     pageTitle = '分类:' + category.name + '的所有文章'
     seo = {'title': title, 'description': pageTitle,
            'keywords': category.name}
@@ -80,12 +80,11 @@ def articlesByCate():
                            categories=Category.query.all(), pageTitle='分类:' + category.name + '的所有文章', seo=seo,
                            newArticles=Article.query.order_by(
                                Article.created_at.desc()).limit(10),
-                           articles=object_list, paginate=paginate, cate_id=int(request.args.get('id')))
+                           articles=object_list, paginate=paginate, cate_id=int(cateid))
 
 
-@base.app.route('/article/listbytag')
-def articlesByTag():
-    tag = request.args.get('tag', '')
+@base.app.route('/article/listbytag/<tag>')
+def articlesByTag(tag):
     page = int(request.args.get('page', 1))
     per_page = 10
     paginate = Article.query
@@ -104,13 +103,13 @@ def articlesByTag():
                            articles=object_list, paginate=paginate)
 
 
-@base.app.route('/article/view')
-def articleView():
-    prevArt = Article.query.filter(Article.id > request.args.get(
-        'id')).order_by(Article.id.asc()).first()
-    nextArt = Article.query.filter(Article.id < request.args.get(
-        'id')).order_by(Article.id.desc()).first()
-    article = Article.query.get(request.args.get('id'))
+@base.app.route('/article/view/<id>')
+def articleView(id):
+    prevArt = Article.query.filter(
+        Article.id > id).order_by(Article.id.asc()).first()
+    nextArt = Article.query.filter(
+        Article.id < id).order_by(Article.id.desc()).first()
+    article = Article.query.get(id)
     seo = {'title': title, 'description': article.summary,
            'keywords': article.tags.strip(',')}
     return render_template('article_view.html',

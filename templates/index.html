@@ -37,7 +37,7 @@
         <nav class="blog-nav">
           <a class="blog-nav-item{% if request.path == '/' %} active{% endif %}" href="/">首页</a>
           {% for category in categories %}
-          <a class="blog-nav-item{% if cate_id==category.id %} active{% endif %}" href="{{ url_for('articlesByCate',id=category.id) }}">{{ category.name }}</a>
+          <a class="blog-nav-item{% if cate_id==category.id %} active{% endif %}" href="{{ url_for('articlesByCate',cateid=category.id) }}">{{ category.name }}</a>
           {% endfor %}
           <a class="blog-nav-item" href="{{ url_for('admin.index') }}">管理</a>
         </nav>
@@ -56,7 +56,7 @@
           <div class="blog-post">
             <h2 class="blog-post-title">{{ article.title }}</h2>
             <p class="blog-post-meta">发布于: {{ article.created_at }}
-              | 分类: <a href="{{ url_for('articlesByCate',id=article.category.id) }}">{{ article.category.name }}</a>
+              | 分类: <a href="{{ url_for('articlesByCate',cateid=article.category.id) }}">{{ article.category.name }}</a>
               | 标签: {% for tag in article.tags.split(',') %}<a href="{{ url_for('articlesByTag',tag=tag) }}">{{ tag }}</a> {% endfor %}
               | <a href="{{ url_for('articleView',id=1) }}">查看全文</a>
             </p>
