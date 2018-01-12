@@ -18,7 +18,7 @@ class Article(db.Model):
                                backref=db.backref('article_categories'))
     category_id = db.Column(db.Integer, db.ForeignKey(
         'article_categories.id'), nullable=False)
-    tags = db.Column(db.String(80))
+    tags = db.Column(db.String(80), nullable=False)
     summary = db.Column(db.Text, nullable=False)
 
     def __str__(self):

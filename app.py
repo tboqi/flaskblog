@@ -43,7 +43,8 @@ admin.add_view(base.MyModelView(base.Router, base.db.session))
 admin.add_view(ArticleView(Article, base.db.session))
 admin.add_view(CategoryView(Category, base.db.session))
 
-seo = {'title': '一只小虫吞太阳', 'description': '各种杂谈及技术的记录, 记录生活与学习',
+title = '一只小虫吞太阳'
+seo = {'title': title, 'description': '各种杂谈及技术的记录, 记录生活与学习',
        'keywords': 'php,python'}
 
 
@@ -73,13 +74,34 @@ def articlesByCate():
     object_list = paginate.items
     category = Category.query.get(int(request.args.get('id')))
     pageTitle = '分类:' + category.name + '的所有文章'
-    seo = {'title': '一只小虫吞太阳', 'description': pageTitle,
+    seo = {'title': title, 'description': pageTitle,
            'keywords': category.name}
     return render_template('index.html',
                            categories=Category.query.all(), pageTitle='分类:' + category.name + '的所有文章', seo=seo,
                            newArticles=Article.query.order_by(
                                Article.created_at.desc()).limit(10),
                            articles=object_list, paginate=paginate, cate_id=int(request.args.get('id')))
+
+
+@base.app.route('/article/listbytag')
+def articlesByTag():
+    tag = request.args.get('tag', '')
+    page = int(request.args.get('page', 1))
+    per_page = 10
+    paginate = Article.query
+    paginate = paginate.filter(
+        Article.tags.like('%' + ',' + tag + ',' + '%'))
+    paginate = paginate.order_by(Article.id.desc())
+    paginate = paginate.paginate(page, per_page, False)
+    object_list = paginate.items
+    pageTitle = '标签:' + tag + '的所有文章'
+    seo = {'title': title, 'description': pageTitle,
+           'keywords': tag}
+    return render_template('index.html',
+                           categories=Category.query.all(), pageTitle=pageTitle, seo=seo,
+                           newArticles=Article.query.order_by(
+                               Article.created_at.desc()).limit(10),
+                           articles=object_list, paginate=paginate)
 
 
 @base.app.route('/article/view')
@@ -89,6 +111,8 @@ def articleView():
     nextArt = Article.query.filter(Article.id < request.args.get(
         'id')).order_by(Article.id.desc()).first()
     article = Article.query.get(request.args.get('id'))
+    seo = {'title': title, 'description': article.summary,
+           'keywords': article.tags.strip(',')}
     return render_template('article_view.html',
                            categories=Category.query.all(), pageTitle=article.title + ' - ' + article.category.name, seo=seo,
                            article=article,
