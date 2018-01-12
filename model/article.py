@@ -47,6 +47,7 @@ class ArticleView(MyModelView):
         'content': CKTextAreaField
     }
     column_formatters = dict(tags=lambda v, c, m, p: m.tags.strip(','))
+    column_filters = ['title', 'author.name', 'tags', 'category.name']
 
     def on_model_change(self, form, model, is_created):
         if is_created:
