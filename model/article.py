@@ -6,18 +6,20 @@ from flask_security import current_user
 class Article(db.Model):
     __tablename__ = 'articles'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(255))
+    title = db.Column(db.String(255), nullable=False)
     content = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime())
     updated_at = db.Column(db.DateTime())
     author = db.relationship('User',
                              backref=db.backref('auth_users'))
-    author_id = db.Column(db.Integer, db.ForeignKey('auth_users.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey(
+        'auth_users.id'), nullable=False)
     category = db.relationship('Category',
                                backref=db.backref('article_categories'))
-    category_id = db.Column(db.Integer, db.ForeignKey('article_categories.id'))
+    category_id = db.Column(db.Integer, db.ForeignKey(
+        'article_categories.id'), nullable=False)
     tags = db.Column(db.String(80))
-    summary = db.Column(db.Text)
+    summary = db.Column(db.Text, nullable=False)
 
     def __str__(self):
         return self.title
