@@ -53,6 +53,8 @@ def index():
     object_list = paginate.items
     return render_template('index.html',
                            categories=Category.query.all(),
+                           newArticles=Article.query.order_by(
+                               Article.created_at.desc()).limit(10),
                            articles=object_list, paginate=paginate)
 
 
@@ -67,6 +69,8 @@ def articlesByCate():
     object_list = paginate.items
     return render_template('index.html',
                            categories=Category.query.all(),
+                           newArticles=Article.query.order_by(
+                               Article.created_at.desc()).limit(10),
                            articles=object_list, paginate=paginate, cate_id=int(request.args.get('id')))
 
 
@@ -80,6 +84,8 @@ def articleView():
                            categories=Category.query.all(),
                            article=Article.query.filter(
                                Article.id == request.args.get('id')).one(),
+                           newArticles=Article.query.order_by(
+                               Article.created_at.desc()).limit(10),
                            prevArt=prevArt, nextArt=nextArt)
 
 if __name__ == '__main__':
