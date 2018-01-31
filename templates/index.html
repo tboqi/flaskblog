@@ -93,6 +93,14 @@
               {% endfor %}
             </ol>
           </div>
+          <div class="sidebar-module">
+            <h4>热门文章</h4>
+            <ol class="list-unstyled">
+              {% for article in hotArticles %}
+              <li><a href="{{ url_for('articleView',id=article.id) }}">{{ article.title }}</a></li>
+              {% endfor %}
+            </ol>
+          </div>
         </div><!-- /.blog-sidebar -->
 
       </div><!-- /.row -->

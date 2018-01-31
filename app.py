@@ -60,6 +60,8 @@ def index():
                            categories=Category.query.all(), seo=seo, pageTitle='首页',
                            newArticles=Article.query.order_by(
                                Article.created_at.desc()).limit(10),
+                           hotArticles=Article.query.order_by(
+                               Article.view_num.desc()).limit(10),
                            articles=object_list, paginate=paginate)
 
 
@@ -80,6 +82,8 @@ def articlesByCate(cateid):
                            categories=Category.query.all(), pageTitle='分类:' + category.name + '的所有文章', seo=seo,
                            newArticles=Article.query.order_by(
                                Article.created_at.desc()).limit(10),
+                           hotArticles=Article.query.order_by(
+                               Article.view_num.desc()).limit(10),
                            articles=object_list, paginate=paginate, cate_id=int(cateid))
 
 
@@ -100,6 +104,8 @@ def articlesByTag(tag):
                            categories=Category.query.all(), pageTitle=pageTitle, seo=seo,
                            newArticles=Article.query.order_by(
                                Article.created_at.desc()).limit(10),
+                           hotArticles=Article.query.order_by(
+                               Article.view_num.desc()).limit(10),
                            articles=object_list, paginate=paginate)
 
 
@@ -120,6 +126,8 @@ def articleView(id):
                            article=article,
                            newArticles=Article.query.order_by(
                                Article.created_at.desc()).limit(10),
+                           hotArticles=Article.query.order_by(
+                               Article.view_num.desc()).limit(10),
                            prevArt=prevArt, nextArt=nextArt)
 
 if __name__ == '__main__':
