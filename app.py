@@ -4,7 +4,7 @@ from flask import Flask, url_for, redirect, render_template, request, abort
 from flask_admin import helpers as admin_helpers
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, current_user
 from model.article import Article, Category, ArticleView, CategoryView
-
+from flask_admin.base import MenuLink, Admin, BaseView, expose
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(base.db, base.User, base.Role)
@@ -35,13 +35,24 @@ class MyHomeView(flask_admin.AdminIndexView):
         return '欢迎'
 
 admin = flask_admin.Admin(
-    base.app, template_mode='bootstrap3', index_view=MyHomeView())
-admin.add_view(base.RoleModelView(base.Role, base.db.session))
-admin.add_view(base.UserModelView(base.User, base.db.session))
-admin.add_view(base.PermissionModelView(base.Permission, base.db.session))
-admin.add_view(base.MyModelView(base.Router, base.db.session))
-admin.add_view(ArticleView(Article, base.db.session))
-admin.add_view(CategoryView(Category, base.db.session))
+    base.app,
+    '后台管理',
+    base_template='my_master.html',
+    template_mode='bootstrap3',
+)
+admin.add_view(ArticleView(Article, base.db.session,
+                           name='文章管理', category='文章管理'))
+admin.add_view(CategoryView(Category, base.db.session,
+                            name='分类管理', category='文章管理'))
+admin.add_view(base.RoleModelView(
+    base.Role, base.db.session, name='角色管理', category='系统管理'))
+admin.add_view(base.UserModelView(
+    base.User, base.db.session, name='用户管理', category='系统管理'))
+admin.add_view(base.PermissionModelView(base.Permission,
+                                        base.db.session, name='权限管理', category='系统管理'))
+admin.add_view(base.MyModelView(
+    base.Router, base.db.session, name='路由管理', category='系统管理'))
+admin.add_link(MenuLink(name='博客首页', url='/'))
 
 title = '一只小虫吞太阳'
 seo = {'title': title, 'description': '各种杂谈及技术的记录, 记录生活与学习',
