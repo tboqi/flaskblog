@@ -5,3 +5,4 @@ Flask-SQLAlchemy
 Flask-Security>=1.7.5
 pyMySQL
 flask-mysqldb
+uwsgi

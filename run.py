@@ -1,4 +1,4 @@
-import base
+from base import app, RoleModelView, db, User, Role, UserModelView, PermissionModelView, Permission, MyModelView, Router
 import flask_admin
 from flask import Flask, url_for, redirect, render_template, request, abort
 from flask_admin import helpers as admin_helpers
@@ -7,8 +7,8 @@ from model.article import Article, Category, ArticleView, CategoryView
 from flask_admin.base import MenuLink, Admin, BaseView, expose
 
 # Setup Flask-Security
-user_datastore = SQLAlchemyUserDatastore(base.db, base.User, base.Role)
-security = Security(base.app, user_datastore)
+user_datastore = SQLAlchemyUserDatastore(db, User, User)
+security = Security(app, user_datastore)
 
 
 @security.context_processor
@@ -35,23 +35,23 @@ class MyHomeView(flask_admin.AdminIndexView):
         return '欢迎'
 
 admin = flask_admin.Admin(
-    base.app,
+    app,
     '后台管理',
     base_template='my_master.html',
     template_mode='bootstrap3',
 )
-admin.add_view(ArticleView(Article, base.db.session,
+admin.add_view(ArticleView(Article, db.session,
                            name='文章管理', category='文章管理'))
-admin.add_view(CategoryView(Category, base.db.session,
+admin.add_view(CategoryView(Category, db.session,
                             name='分类管理', category='文章管理'))
-admin.add_view(base.RoleModelView(
-    base.Role, base.db.session, name='角色管理', category='系统管理'))
-admin.add_view(base.UserModelView(
-    base.User, base.db.session, name='用户管理', category='系统管理'))
-admin.add_view(base.PermissionModelView(base.Permission,
-                                        base.db.session, name='权限管理', category='系统管理'))
-admin.add_view(base.MyModelView(
-    base.Router, base.db.session, name='路由管理', category='系统管理'))
+admin.add_view(RoleModelView(
+    Role, db.session, name='角色管理', category='系统管理'))
+admin.add_view(UserModelView(
+    User, db.session, name='用户管理', category='系统管理'))
+admin.add_view(PermissionModelView(Permission,
+                                   db.session, name='权限管理', category='系统管理'))
+admin.add_view(MyModelView(
+    Router, db.session, name='路由管理', category='系统管理'))
 admin.add_link(MenuLink(name='博客首页', url='/'))
 
 title = '一只小虫吞太阳'
@@ -59,7 +59,7 @@ seo = {'title': title, 'description': '各种杂谈及技术的记录, 记录生
        'keywords': 'php,python'}
 
 
-@base.app.route('/')
+@app.route('/')
 def index():
     page = int(request.args.get('page', 1))
     per_page = 10
@@ -76,7 +76,7 @@ def index():
                            articles=object_list, paginate=paginate)
 
 
-@base.app.route('/article/listbycate/<cateid>')
+@app.route('/article/listbycate/<cateid>')
 def articlesByCate(cateid):
     page = int(request.args.get('page', 1))
     per_page = 10
@@ -98,7 +98,7 @@ def articlesByCate(cateid):
                            articles=object_list, paginate=paginate, cate_id=int(cateid))
 
 
-@base.app.route('/article/listbytag/<tag>')
+@app.route('/article/listbytag/<tag>')
 def articlesByTag(tag):
     page = int(request.args.get('page', 1))
     per_page = 10
@@ -120,7 +120,7 @@ def articlesByTag(tag):
                            articles=object_list, paginate=paginate)
 
 
-@base.app.route('/article/view/<id>')
+@app.route('/article/view/<id>')
 def articleView(id):
     prevArt = Article.query.filter(
         Article.id > id).order_by(Article.id.asc()).first()
@@ -128,8 +128,8 @@ def articleView(id):
         Article.id < id).order_by(Article.id.desc()).first()
     article = Article.query.get(id)
     article.view_num = article.view_num + 1
-    base.db.session.add(article)
-    base.db.session.commit()
+    db.session.add(article)
+    db.session.commit()
     seo = {'title': title, 'description': article.summary,
            'keywords': article.tags.strip(',')}
     return render_template('article_view.html',
@@ -142,5 +142,5 @@ def articleView(id):
                            prevArt=prevArt, nextArt=nextArt)
 
 if __name__ == '__main__':
-    base.app.jinja_env.auto_reload = True
-    base.app.run(debug=True, port=5000)
+    app.jinja_env.auto_reload = True
+    app.run(debug=True, port=80, host='0.0.0.0')
