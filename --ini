@@ -1,0 +1,99 @@
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Feb  6 15:32:58 2018] ***
+compiled with version: 6.3.0 20170516 on 06 February 2018 13:25:26
+os: Linux-4.9.31-moby #1 SMP Sat Jun 24 06:29:23 UTC 2017
+nodename: 682dbde2119f
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 2
+current working directory: /work/d/code/flaskblog
+detected binary path: /work/d/code/flaskblog/.env/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your memory page size is 4096 bytes
+detected max file descriptor number: 1048576
+lock engine: pthread robust mutexes
+thunder lock: enabled
+uwsgi socket 0 bound to UNIX address /tmp/uwsgi_flaskblog.sock fd 3
+Python version: 3.5.3 (default, Jan 19 2017, 14:11:04)  [GCC 6.3.0 20170118]
+Set PythonHome to /work/d/code/flaskblog/.env
+Python main interpreter initialized at 0x5599df76d860
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 145520 bytes (142 KB) for 1 cores
+*** Operational MODE: single process ***
+added /work/d/code/flaskblog/ to pythonpath.
+WSGI app 0 (mountpoint='') ready in 7 seconds on interpreter 0x5599df76d860 pid: 1838 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1838)
+spawned uWSGI worker 1 (pid: 1840, cores: 1)
+...brutally killing workers...
+worker 1 buried after 1 seconds
+binary reloading uWSGI...
+chdir() to /work/d/code/flaskblog
+closing all non-uwsgi socket fds > 2 (max_fd = 1048576)...
+found fd 3 mapped to socket 0 (/tmp/uwsgi_flaskblog.sock)
+running /work/d/code/flaskblog/.env/bin/uwsgi
+[uWSGI] getting INI configuration from uwsgi.ini
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Feb  6 15:33:34 2018] ***
+compiled with version: 6.3.0 20170516 on 06 February 2018 13:25:26
+os: Linux-4.9.31-moby #1 SMP Sat Jun 24 06:29:23 UTC 2017
+nodename: 682dbde2119f
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 2
+current working directory: /work/d/code/flaskblog
+detected binary path: /work/d/code/flaskblog/.env/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your memory page size is 4096 bytes
+detected max file descriptor number: 1048576
+lock engine: pthread robust mutexes
+thunder lock: enabled
+uwsgi socket 0 inherited UNIX address /tmp/uwsgi_flaskblog.sock fd 3
+Python version: 3.5.3 (default, Jan 19 2017, 14:11:04)  [GCC 6.3.0 20170118]
+Set PythonHome to /work/d/code/flaskblog/.env
+Python main interpreter initialized at 0x55f4bfc867d0
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 145520 bytes (142 KB) for 1 cores
+*** Operational MODE: single process ***
+added /work/d/code/flaskblog/ to pythonpath.
+WSGI app 0 (mountpoint='') ready in 4 seconds on interpreter 0x55f4bfc867d0 pid: 1838 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+gracefully (RE)spawned uWSGI master process (pid: 1838)
+spawned uWSGI worker 1 (pid: 1846, cores: 1)
+Tue Feb  6 15:33:50 2018 - uWSGI worker 1 screams: UAAAAAAH my master disconnected: i will kill myself !!!
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Feb  6 15:33:57 2018] ***
+compiled with version: 6.3.0 20170516 on 06 February 2018 13:25:26
+os: Linux-4.9.31-moby #1 SMP Sat Jun 24 06:29:23 UTC 2017
+nodename: 682dbde2119f
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 2
+current working directory: /work/d/code/flaskblog
+detected binary path: /work/d/code/flaskblog/.env/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your memory page size is 4096 bytes
+detected max file descriptor number: 1048576
+lock engine: pthread robust mutexes
+thunder lock: enabled
+uwsgi socket 0 bound to UNIX address /tmp/uwsgi_flaskblog.sock fd 3
+Python version: 3.5.3 (default, Jan 19 2017, 14:11:04)  [GCC 6.3.0 20170118]
+Set PythonHome to /work/d/code/flaskblog/.env
+Python main interpreter initialized at 0x5579ddc44860
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 145520 bytes (142 KB) for 1 cores
+*** Operational MODE: single process ***
+added /work/d/code/flaskblog/ to pythonpath.
+WSGI app 0 (mountpoint='') ready in 3 seconds on interpreter 0x5579ddc44860 pid: 1851 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1851)
+spawned uWSGI worker 1 (pid: 1855, cores: 1)

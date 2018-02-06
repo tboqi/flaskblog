@@ -21,6 +21,5 @@ deactivate  # 停用 virtualenv 你的命令提示符会恢复原样
 
 模块: flask_admin
 
-uwsgi --socket 0.0.0.0:80 --protocol=http -w wsgi:app
 uwsgi --socket 0.0.0.0:80 --protocol=http -w run:app  --thunder-lock  --enable-threads
-uwsgi --ini uwsgi.ini
+uwsgi -d --ini uwsgi.ini  --thunder-lock  --enable-threads
